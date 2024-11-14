@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.taskmanager.ui.MainController" alignment="CENTER" spacing="10">
+    <Label text="Add New Task"/>
+    <TextField fx:id="titleField" promptText="Title"/>
+    <TextArea fx:id="descriptionField" promptText="Description"/>
+    <ComboBox fx:id="categoryCombo" promptText="Select Category"/>
+    <ComboBox fx:id="priorityCombo" promptText="Select Priority"/>
+    <Button text="Save Task" onAction="#onSaveTask"/>
+</VBox>

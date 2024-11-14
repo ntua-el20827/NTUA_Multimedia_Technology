@@ -37,6 +37,9 @@ javafx {
 
 dependencies {
   implementation('org.controlsfx:controlsfx:11.1.2')
+  // Για τα json
+  implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+  implementation 'org.openjfx:javafx-controls:19'
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

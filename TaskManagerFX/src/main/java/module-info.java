@@ -1,6 +1,7 @@
 module com.taskmanager {
     requires javafx.controls;
     requires javafx.fxml;
+    requires json.simple;
     //requires com.fasterxml.jackson.databind;  // Για ανάγνωση/εγγραφή JSON
 
     opens com.taskmanager.ui to javafx.fxml;
