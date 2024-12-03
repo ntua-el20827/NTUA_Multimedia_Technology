@@ -1,6 +1,6 @@
 package com.taskmanager.ui;
 
-import com.taskmanager.json.JsonHandler;
+//import com.taskmanager.json.JsonHandler;
 import com.taskmanager.model.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,9 +36,9 @@ public class MainController {
         );
 
         taskListView.getItems().add(dummyTask);
-        tasks = JsonHandler.loadTasks();
+        //tasks = JsonHandler.loadTasks();
         // Προσθήκη των tasks στο ListView
-        taskListView.getItems().addAll(tasks);
+        //taskListView.getItems().addAll(tasks);
     }
 
     @FXML

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.taskmanager.ui.MainController" alignment="CENTER" spacing="10">
+      fx:controller="com.taskmanager.ui.TaskController" alignment="CENTER" spacing="10">
     <Label text="Add New Task"/>
     <TextField fx:id="titleField" promptText="Title"/>
     <TextArea fx:id="descriptionField" promptText="Description"/>
