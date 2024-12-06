@@ -13,5 +13,4 @@
     <TextArea fx:id="descriptionField" promptText="Description"/>
     <ComboBox fx:id="categoryCombo" promptText="Select Category"/>
     <ComboBox fx:id="priorityCombo" promptText="Select Priority"/>
-    <Button text="Save Task" onAction="#onSaveTask"/>
 </VBox>

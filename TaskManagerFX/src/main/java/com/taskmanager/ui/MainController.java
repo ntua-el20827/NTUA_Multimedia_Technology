@@ -1,6 +1,6 @@
 package com.taskmanager.ui;
 
-//import com.taskmanager.json.JsonHandler;
+import com.taskmanager.json.JSONHandler;
 import com.taskmanager.model.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,20 +25,13 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        // Create a dummy task and add it to the ListView
-        Task dummyTask = new Task(
-                "Study for Exam",
-                "Prepare for the upcoming Java exam.",
-                "School",
-                "High",
-                LocalDate.of(2024, 12, 1),
-                "Open"
-        );
+        // Φόρτωση των tasks από το JSON
+        tasks = JSONHandler.loadTasks();
 
-        taskListView.getItems().add(dummyTask);
-        //tasks = JsonHandler.loadTasks();
-        // Προσθήκη των tasks στο ListView
-        //taskListView.getItems().addAll(tasks);
+        // Αν υπάρχουν tasks, προστίθενται στο ListView
+        if (tasks != null) {
+            taskListView.getItems().addAll(tasks);
+        }
     }
 
     @FXML
