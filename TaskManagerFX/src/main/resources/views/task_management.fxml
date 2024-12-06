@@ -13,4 +13,7 @@
     <TextArea fx:id="descriptionField" promptText="Description"/>
     <ComboBox fx:id="categoryCombo" promptText="Select Category"/>
     <ComboBox fx:id="priorityCombo" promptText="Select Priority"/>
+    <ComboBox fx:id="statusCombo" promptText="Select Status"/>
+    <DatePicker fx:id="dueDatePicker" promptText="Select Due Date"/>
+    <Button text="Save" onAction="#onSaveTask" />
 </VBox>

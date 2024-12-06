@@ -25,26 +25,67 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        // Φόρτωση των tasks από το JSON
+        // Load Tasks from Json files
         tasks = JSONHandler.loadTasks();
 
         // Αν υπάρχουν tasks, προστίθενται στο ListView
         if (tasks != null) {
             taskListView.getItems().addAll(tasks);
         }
+
+        // Allow the user to select a task from the ListView. Make them Clickable!
+        taskListView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Double-click to edit
+                Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
+                if (selectedTask != null) {
+                    editTask(selectedTask);
+                }
+            }
+        });
     }
 
     @FXML
     private void onAddTask() {
-        // Anoigei neo parathiro gia na ftiakso to task
+        // New Dialog to create a task
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/task_management.fxml"));
             Parent root = loader.load();
+
+            TaskController controller = loader.getController();
 
             Stage stage = new Stage();
             stage.setTitle("Add New Task");
             stage.setScene(new Scene(root));
             stage.showAndWait();
+            Task newTask = controller.getCreatedTask();
+            if (newTask != null) {
+                tasks.add(newTask);
+                taskListView.getItems().add(newTask);
+                JSONHandler.saveTasks(tasks); // Save updated task list to JSON
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editTask(Task task) {
+        // New Dialog to Edit a Task!
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/task_management.fxml"));
+            Parent root = loader.load();
+
+            TaskController controller = loader.getController();
+            controller.setTask(task); // Pass the selected task to the controller
+
+            // Show the dialog and wait until the user closes it
+            Stage stage = new Stage();
+            stage.setTitle("Edit Task");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            // Update task details
+            taskListView.refresh();
+            JSONHandler.saveTasks(tasks); // Save updated task list to JSON
         } catch (IOException e) {
             e.printStackTrace();
         }

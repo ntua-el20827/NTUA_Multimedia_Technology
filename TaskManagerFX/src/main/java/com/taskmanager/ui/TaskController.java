@@ -12,17 +12,20 @@ import java.time.Month;
 
 // TaskController.java
 public class TaskController {
-    @FXML
-    private TextField titleField;
+    @FXML private TextField titleField;
     @FXML private TextArea descriptionField;
     @FXML private ComboBox<String> categoryCombo;
     @FXML private ComboBox<String> priorityCombo;
+    @FXML private ComboBox<String> statusCombo;
+    @FXML private ComboBox<LocalDate> dueDateCombo;
+
 
     private Task createdTask;
 
     @FXML
     private void initialize() {
         // Προσθήκη dummy επιλογών για το παράδειγμα
+        statusCombo.getItems().addAll("Open", "In Progress", "Postponed", "Completed", "Delayed");
         categoryCombo.getItems().addAll("Work", "Personal", "Hobby");
         priorityCombo.getItems().addAll("Low", "Medium", "High");
     }
@@ -44,5 +47,16 @@ public class TaskController {
 
     public Task getCreatedTask() {
         return createdTask;
+    }
+
+    public void setTask(Task task) {
+        if (task != null) {
+            titleField.setText(task.getTitle());
+            descriptionField.setText(task.getDescription());
+            categoryCombo.setValue(task.getCategory());
+            priorityCombo.setValue(task.getPriority());
+            statusCombo.setValue(task.getStatus());
+            dueDateCombo.setValue(task.getDueDate());
+        }
     }
 }
