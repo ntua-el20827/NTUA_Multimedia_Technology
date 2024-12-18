@@ -35,7 +35,7 @@ public class JSONHandler {
             // (2) Make dueDate String
             // Chose solution (1). Πρεπει να είναι σε αυτό το format αναγκαστικα!
             // Αρα θα φτιάξω εναν custom Type Adapter για να μπορεί να χρησιμοποιήσει το Gson.
-            // Αναγκαστικά χρησιμοποιώ και το GsonBuilder και οχι το default!
+            // Αναγκαστικά χρησιμοποιώ και το GsonBuilder και οχι τοα default!
             // Τωρα δουλεύει!
             tasks = gson.fromJson(reader, taskListType);
         } catch (IOException e) {

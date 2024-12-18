@@ -16,12 +16,16 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MainController {
 
     @FXML
     private ListView<Task> taskListView;
     private List<Task> tasks;
+    // Static γιατι θελω η getTitles() να είναι static, να αφορά δηλαδή την κλάση και οχι το αντικείμενο!
+    public static List<UUID> ids;
 
     @FXML
     public void initialize() {
@@ -33,6 +37,9 @@ public class MainController {
             taskListView.getItems().addAll(tasks);
         }
 
+        // Get all titles
+        ids = tasks.stream().map(Task::getId).collect(Collectors.toList());
+
         // Allow the user to select a task from the ListView. Make them Clickable!
         taskListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Double-click to edit
@@ -43,6 +50,17 @@ public class MainController {
             }
         });
     }
+
+    @FXML
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    @FXML
+    public static List<UUID> getIds() {
+        return ids;
+    }
+
 
     @FXML
     private void onAddTask() {
@@ -85,7 +103,7 @@ public class MainController {
 
             // Update task details
             taskListView.refresh();
-            JSONHandler.saveTasks(tasks); // Save updated task list to JSON
+            //JSONHandler.saveTasks(tasks); // Save updated task list to JSON
         } catch (IOException e) {
             e.printStackTrace();
         }

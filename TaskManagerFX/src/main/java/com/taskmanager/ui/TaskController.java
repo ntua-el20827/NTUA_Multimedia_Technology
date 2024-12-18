@@ -3,12 +3,15 @@ package com.taskmanager.ui;
 import com.taskmanager.model.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
+import java.util.UUID;
 
 // TaskController.java
 public class TaskController {
@@ -17,10 +20,11 @@ public class TaskController {
     @FXML private ComboBox<String> categoryCombo;
     @FXML private ComboBox<String> priorityCombo;
     @FXML private ComboBox<String> statusCombo;
-    @FXML private ComboBox<LocalDate> dueDateCombo;
-
+    //@FXML private ComboBox<LocalDate> dueDateCombo;
+    @FXML private DatePicker dueDatePicker;
 
     private Task createdTask;
+    // Πρεπει να αλλάξει σε currentTask!!
 
     @FXML
     private void initialize() {
@@ -28,6 +32,7 @@ public class TaskController {
         statusCombo.getItems().addAll("Open", "In Progress", "Postponed", "Completed", "Delayed");
         categoryCombo.getItems().addAll("Work", "Personal", "Hobby");
         priorityCombo.getItems().addAll("Low", "Medium", "High");
+
     }
 
     @FXML
@@ -36,13 +41,27 @@ public class TaskController {
         String description = descriptionField.getText();
         String category = categoryCombo.getValue();
         String priority = priorityCombo.getValue();
+        LocalDate dueDate = dueDatePicker.getValue();
 
-        if (title != null && category != null && priority != null) {
-            LocalDate date = LocalDate.of(2024, Month.DECEMBER, 8);
-            createdTask = new Task(title, description, category, priority, date,"Open");
+        // Check if the title is in the list of titles
+        List<UUID> ids = MainController.getIds();
+        if (ids.contains(title)) {
+            System.out.println("Title already exists!");
+            return;
+        }
+
+
+        if (title != null && category != null && priority != null && dueDate != null) {
+
+            createdTask = new Task(title, description, category, priority, dueDate,"Open");
             // Κλείσιμο του παραθύρου
             ((Stage) titleField.getScene().getWindow()).close();
         }
+    }
+
+    @FXML
+    private void onDeleteTask(Task task) {
+
     }
 
     public Task getCreatedTask() {
@@ -56,7 +75,8 @@ public class TaskController {
             categoryCombo.setValue(task.getCategory());
             priorityCombo.setValue(task.getPriority());
             statusCombo.setValue(task.getStatus());
-            dueDateCombo.setValue(task.getDueDate());
+            //dueDateCombo.setValue(task.getDueDate()); // Δεν το αναγνωρίζει
+            dueDatePicker.setValue(task.getDueDate());
         }
     }
 }

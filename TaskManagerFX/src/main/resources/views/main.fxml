@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
 
-
-
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.taskmanager.ui.MainController">
-    <ListView fx:id="taskListView" prefHeight="300" prefWidth="400" />
-    <Button text="Add Task" onAction="#onAddTask" />
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.taskmanager.ui.MainController">
+    <ListView fx:id="taskListView" prefHeight="334.0" prefWidth="810.0" />
+    <Button onAction="#onAddTask" text="Add Task" />
 </VBox>
