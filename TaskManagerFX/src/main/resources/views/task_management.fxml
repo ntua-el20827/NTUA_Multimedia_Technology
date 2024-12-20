@@ -16,4 +16,5 @@
     <ComboBox fx:id="statusCombo" promptText="Select Status"/>
     <DatePicker fx:id="dueDatePicker" promptText="Select Due Date"/>
     <Button text="Save" onAction="#onSaveTask" />
+    <Button text="Delete" fx:id="deleteButton" onAction="#onDeleteTask" visible="false"/> <!-- Initially hidden -->
 </VBox>

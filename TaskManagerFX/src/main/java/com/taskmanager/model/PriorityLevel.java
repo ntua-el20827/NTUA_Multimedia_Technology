@@ -1,21 +1,21 @@
 package com.taskmanager.model;
 
 public class PriorityLevel {
-    private String name;
-    public PriorityLevel(String name) {
-        this.name = name;
+    private String level;
+
+    public PriorityLevel(String level) {
+        this.level = level;
     }
 
-    public String getName() {
-        return name;
+    public String getLevel() {
+        return level;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLevel(String level) {
+        this.level = level;
     }
 
-    @Override
     public String toString() {
-        return name;
+        return level;
     }
 }

@@ -1,0 +1,57 @@
+================================================================================
+[
+  {
+    "title": "Complete project report",
+    "description": "Finish the annual project report and submit it to the manager.",
+    "category": "Work",
+    "priority": "High",
+    "dueDate": "2024-12-30",
+    "status": "In Progress"
+  },
+  {
+    "title": "Grocery shopping",
+    "description": "Buy vegetables, fruits, and dairy products.",
+    "category": "Personal",
+    "priority": "Medium",
+    "dueDate": "2024-12-25",
+    "status": "Open"
+  },
+  {
+    "title": "Yoga session",
+    "description": "Attend the morning yoga session at the community center.",
+    "category": "Hobby",
+    "priority": "Low",
+    "dueDate": "2024-12-21",
+    "status": "Completed"
+  }
+]
+
+================================================================================
+[
+  {
+    "name": "Work"
+  },
+  {
+    "name": "Personal"
+  },
+  {
+    "name": "Hobby"
+  }
+]
+
+================================================================================
+[
+  {
+    "level": "Default"
+  },
+  {
+    "level": "High"
+  },
+  {
+    "level": "Medium"
+  },
+  {
+    "level": "Low"
+  }
+]
+

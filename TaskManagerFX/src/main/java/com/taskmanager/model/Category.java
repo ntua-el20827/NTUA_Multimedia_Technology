@@ -1,5 +1,8 @@
 package com.taskmanager.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Category {
     private String name;
 
@@ -15,7 +18,6 @@ public class Category {
         this.name = name;
     }
 
-    @Override
     public String toString() {
         return name;
     }

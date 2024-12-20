@@ -10,8 +10,6 @@ public class Task {
     private String priority;
     private LocalDate dueDate;
     private String status;
-    private UUID id;
-    // Το id ίσως και να μην χρειάζεται τελικά!
 
     // Status can take values:  "Open", "In Progress", "Postponed", "Completed", "Delayed"
 
@@ -22,7 +20,6 @@ public class Task {
         this.priority = priority;
         this.dueDate = dueDate;
         this.status = status;
-        this.id = UUID.randomUUID();
     }
     // Getters and Setters
     public String getTitle() {
@@ -75,17 +72,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return title + " (" + status + ")";
+        return title + " ( Status = " + status + "/ Category = " + category + "/ Priority = " + priority + "/ Due Date = " + dueDate + " )";
     }
-
-    public UUID getId() {
-        return id;
-    }
-
-    // Creating New Task
-
-    // Modifying a Task
-
-    // Deleting a Task
 
 }

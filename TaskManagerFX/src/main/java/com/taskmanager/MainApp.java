@@ -1,6 +1,8 @@
 package com.taskmanager;
 
 import com.taskmanager.json.JSONHandler;
+import com.taskmanager.model.Category;
+import com.taskmanager.model.PriorityLevel;
 import com.taskmanager.model.Task;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,17 +26,25 @@ public class MainApp extends Application {
             MainController controller = loader.getController();
             // Retrieve the tasks from the controller (that were loaded during initialization)
             List<Task> tasks = controller.getTasks();  // Assuming you have a getter for tasks
+            // Retrieve the categories from the controller (that were loaded during initialization)
+            List<Category> categories = controller.getCategories();  // Assuming you have a getter for categories
+            // Retrieve the priorities from the controller (that were loaded during initialization)
+            List<PriorityLevel> priorities = controller.getPriorities();  // Assuming you have a getter for priorities
+
+
 
             Scene scene = new Scene(root, 400, 300);
 
-            primaryStage.setTitle("Task Manager");
+            primaryStage.setTitle("Media Lab Assistant");
             primaryStage.setScene(scene);
 
             // Add event handler for when the window is closed
             primaryStage.setOnCloseRequest(event -> {
                 // Save tasks to JSON when the application is closed
                 JSONHandler.saveTasks(tasks);
-                System.out.println("Tasks have been saved.");
+                JSONHandler.saveCategories(categories);
+                JSONHandler.savePriorities(priorities);
+                System.out.println("All saved to JSON");
             });
 
             primaryStage.show();
