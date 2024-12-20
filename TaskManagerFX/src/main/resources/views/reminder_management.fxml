@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.taskmanager.ui.ReminderController" alignment="CENTER" spacing="10">
+    <Label text="Manage Reminders" />
+    <ComboBox fx:id="typeCombo" promptText="Select Reminder Type" />
+    <DatePicker fx:id="customDatePicker" promptText="Select Custom Date" visible="false" />
+    <Button text="Save" fx:id="saveButton" onAction="#onSaveReminder" />
+    <Button text="Delete" fx:id="deleteButton" onAction="#onDeleteReminder" visible="false" />
+</VBox>

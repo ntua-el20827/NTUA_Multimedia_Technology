@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder; // Create Gson object in a different way!
 import com.google.gson.reflect.TypeToken;
 import com.taskmanager.model.Category;
 import com.taskmanager.model.PriorityLevel;
+import com.taskmanager.model.Reminder;
 import com.taskmanager.model.Task;
+import javafx.scene.layout.Priority;
 
 
 import java.io.File;
@@ -21,28 +23,42 @@ public class JSONHandler {
     private static final String TASKS_FILE = "src/main/resources/medialab/tasks.json";
     private static final String CATEGORIES_FILE = "src/main/resources/medialab/categories.json";
     private static final String PRIORITIES_FILE = "src/main/resources/medialab/priorities.json";
+    private static final String REMINDERS_FILE = "src/main/resources/medialab/reminders.json";
 
     // Φόρτωση εργασιών από το JSON αρχείο
-    public static List<Task> loadTasks() {
+    public static List<Task> loadTasks(List<Category> categories, List<PriorityLevel> priorities) {
         List<Task> tasks = new ArrayList<>();
-        //System.out.println(new File("src/main/resources/medialab/tasks.json").getAbsolutePath());
-        //System.out.println(System.getProperty("java.class.path"));
         try (FileReader reader = new FileReader(TASKS_FILE)) {
             Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()) // Για LocalDate
                     .create();
             Type taskListType = new TypeToken<List<Task>>() {}.getType();
+            List<Task> loadedTasks = gson.fromJson(reader, taskListType);
 
-            System.out.println("Okey thus far");
-            // Working!
-            // Problem with the Date! (dueDate is LocalDate)
-            // (1) Fix the problem
-            // (2) Make dueDate String
-            // Chose solution (1). Πρεπει να είναι σε αυτό το format αναγκαστικα!
-            // Αρα θα φτιάξω εναν custom Type Adapter για να μπορεί να χρησιμοποιήσει το Gson.
-            // Αναγκαστικά χρησιμοποιώ και το GsonBuilder και οχι τοα default!
-            // Τωρα δουλεύει!
-            tasks = gson.fromJson(reader, taskListType);
+            for (Task task : loadedTasks) {
+                // Συνδέουμε την κατηγορία
+                Category category = categories.stream()
+                        .filter(cat -> cat.getName().equals(task.getCategory().getName()))
+                        .findFirst()
+                        .orElse(null);
+                task.setCategory(category);
+
+                // Συνδέουμε την προτεραιότητα
+                PriorityLevel priority = priorities.stream()
+                        .filter(pri -> pri.getLevel().equals(task.getPriority().getLevel()))
+                        .findFirst()
+                        .orElse(null);
+                task.setPriority(priority);
+
+                tasks.add(task);
+            }
+            // Διασφαλίζουμε ότι η λίστα reminders δεν είναι null
+            for (Task task : tasks) {
+                if (task.getReminders() == null) {
+                    task.setReminders(new ArrayList<>());
+                }
+            }
+
         } catch (IOException e) {
             System.out.println("Error loading tasks: " + e.getMessage());
         }
@@ -73,6 +89,20 @@ public class JSONHandler {
         return priorities;
     }
 
+    public static List<Reminder> loadReminders() {
+        List<Reminder> reminders = new ArrayList<>();
+        try (FileReader reader = new FileReader(REMINDERS_FILE)) {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()) // Για το LocalDate
+                    .create();
+            Type reminderListType = new TypeToken<List<Reminder>>() {}.getType();
+            reminders = gson.fromJson(reader, reminderListType);
+        } catch (IOException e) {
+            System.out.println("Error loading reminders: " + e.getMessage());
+        }
+        return reminders;
+    }
+
     // Αποθήκευση εργασιών στο JSON αρχείο
     public static void saveTasks(List<Task> tasks) {
         try (FileWriter writer = new FileWriter(TASKS_FILE)) {
@@ -95,7 +125,7 @@ public class JSONHandler {
         }
     }
 
-    public static <Priority> void savePriorities(List<Priority> priorities) {
+    public static void savePriorities(List<PriorityLevel> priorities) {
         try (FileWriter writer = new FileWriter(PRIORITIES_FILE)) {
             Gson gson = new Gson();
             gson.toJson(priorities, writer);
@@ -103,4 +133,16 @@ public class JSONHandler {
             System.out.println("Error saving priorities: " + e.getMessage());
         }
     }
+
+    public static void saveReminders(List<Reminder> reminders) {
+        try (FileWriter writer = new FileWriter(REMINDERS_FILE)) {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()) // Για το LocalDate
+                    .create();
+            gson.toJson(reminders, writer);
+        } catch (IOException e) {
+            System.out.println("Error saving reminders: " + e.getMessage());
+        }
+    }
+
 }

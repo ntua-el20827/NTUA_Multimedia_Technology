@@ -1,8 +1,5 @@
 package com.taskmanager.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Category {
     private String name;
 
@@ -21,4 +18,19 @@ public class Category {
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Αν είναι το ίδιο αντικείμενο
+        if (obj == null || getClass() != obj.getClass()) return false; // Αν είναι διαφορετικός τύπος
+
+        Category category = (Category) obj;
+        return name != null && name.equals(category.name); // Σύγκριση με βάση το όνομα
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
+
 }

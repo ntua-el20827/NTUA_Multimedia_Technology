@@ -8,13 +8,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.util.List;
+import java.util.UUID;
 
 // TaskController.java
 public class TaskController {
     @FXML private TextField titleField;
     @FXML private TextArea descriptionField;
-    @FXML private ComboBox<String> categoryCombo;
-    @FXML private ComboBox<String> priorityCombo;
+    @FXML private ComboBox<Category> categoryCombo;
+    @FXML private ComboBox<PriorityLevel> priorityCombo;
     @FXML private ComboBox<String> statusCombo;
     //@FXML private ComboBox<LocalDate> dueDateCombo;
     @FXML private DatePicker dueDatePicker;
@@ -64,14 +65,14 @@ public class TaskController {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
         if (categories != null) {
-            categoryCombo.getItems().setAll(categories.stream().map(Category::getName).toList());
+            categoryCombo.getItems().setAll(categories);
         }
     }
 
     public void setPriorities(List<PriorityLevel> priorities) {
         this.priorities = priorities;
         if (priorities != null) {
-            priorityCombo.getItems().setAll(priorities.stream().map(PriorityLevel::getLevel).toList());
+            priorityCombo.getItems().setAll(priorities);
         }
     }
 
@@ -85,7 +86,8 @@ public class TaskController {
                     categoryCombo.getValue(),
                     priorityCombo.getValue(),
                     dueDatePicker.getValue(),
-                    statusCombo.getValue()
+                    statusCombo.getValue(),
+                    UUID.randomUUID().toString()
                     );
         }
         else {

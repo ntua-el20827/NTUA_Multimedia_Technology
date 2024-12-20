@@ -1,8 +1,8 @@
 package com.taskmanager.ui;
 
-import com.taskmanager.json.JSONHandler;
 import com.taskmanager.model.Category;
 import com.taskmanager.model.PriorityLevel;
+import com.taskmanager.model.Reminder;
 import com.taskmanager.model.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,9 +18,11 @@ public class MainController {
     @FXML private ListView<Task> taskListView;
     @FXML private ListView<Category> categoryListView;
     @FXML private ListView<PriorityLevel> priorityListView;
+    @FXML private ListView<Reminder> reminderListView;
     private List<Task> tasks;
     private List<Category> categories;
     private List<PriorityLevel> priorities;
+    private List<Reminder> reminders;
 
     // For Statistics
     @FXML private Label totalTasksLabel;
@@ -32,20 +34,8 @@ public class MainController {
     // Initialize. Load tasks from json files.
     @FXML
     public void initialize() {
+        // Allow the user to interact with the list views
         // -- Tasks --
-        tasks = JSONHandler.loadTasks();
-        updateStatistics(); // Update statistics
-        if (totalTasksLabel == null || completedTasksLabel == null || delayedTasksLabel == null || dueSoonTasksLabel == null) {
-            System.out.println("Error: Labels not initialized properly!");
-        } else {
-            System.out.println("Labels initialized correctly.");
-        }
-        // Fill ListView
-        if (tasks != null) {
-            taskListView.getItems().addAll(tasks);
-        }
-
-        // Allow the user to select a task from the ListView. Make them Clickable!
         taskListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Double-click to edit
                 Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
@@ -56,11 +46,6 @@ public class MainController {
         });
 
         // -- Categories --
-        categories = JSONHandler.loadCategories();
-        if (categories != null) {
-            // Fill ListView with names of categories
-            categoryListView.getItems().addAll(categories);
-        }
         categoryListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 Category selectedCategory = categoryListView.getSelectionModel().getSelectedItem();
@@ -72,11 +57,6 @@ public class MainController {
         });
 
         // -- Priorities --
-        priorities = JSONHandler.loadPriorities();
-        if (priorities != null) {
-            // Fill ListView with names of priorities
-            priorityListView.getItems().addAll(priorities);
-        }
         priorityListView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 PriorityLevel selectedPriority = priorityListView.getSelectionModel().getSelectedItem();
@@ -87,14 +67,43 @@ public class MainController {
             }
         });
 
+        // -- Reminders --
+        reminderListView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Reminder selectedReminder = reminderListView.getSelectionModel().getSelectedItem();
+                if (selectedReminder != null) {
+                    System.out.println("Selected Reminder: " + selectedReminder);
+                    EditReminder();
+                }
+            }
+        });
     }
+
+    // On Initialization from MainApp, configure the tasks, categories, and priorities
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+        categoryListView.getItems().addAll(categories); // Ενημερώνει το GUI
+    }
+
+    public void setPriorities(List<PriorityLevel> priorities) {
+        this.priorities = priorities;
+        priorityListView.getItems().addAll(priorities); // Ενημερώνει το GUI
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+        taskListView.getItems().addAll(tasks); // Ενημερώνει το GUI
+    }
+
+    public void setReminders(List<Reminder> reminders) {
+        // Εδώ θα πρέπει να συνδέσουμε τις υπενθυμίσεις με τις εργασίες
+        this.reminders = reminders;
+        reminderListView.getItems().addAll(reminders); // Ενημερώνει το GUI
+    }
+
 
 
     // Tasks
-    @FXML
-    public List<Task> getTasks() {
-        return tasks;
-    }
 
     @FXML
     private void onAddTask() {
@@ -134,7 +143,7 @@ public class MainController {
             Parent root = loader.load();
 
             TaskController controller = loader.getController();
-            controller.setTask(task); // Pass the selected task to the controller
+            controller.setTask(task); // Pass the selected task to the controllerα
 
             // Pass the categories and priorities to the controller
             controller.setCategories(categories);
@@ -167,10 +176,6 @@ public class MainController {
     }
 
     // Categories
-    @FXML
-    public List<Category> getCategories() {
-        return categories;
-    }
     @FXML
     private void onAddCategory() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/category_management.fxml"));
@@ -214,9 +219,9 @@ public class MainController {
                 categories.remove(category);
                 categoryListView.getItems().remove(category);
                 // Delete all tasks with this category
-                tasks.removeIf(task -> task.getCategory().equals(category.getName()));
-                //taskListView.refresh();
-                taskListView.getItems().removeIf(task -> task.getCategory().equals(category.getName()));
+                tasks.removeIf(task -> task.getCategory().equals(category));
+                taskListView.getItems().removeIf(task -> task.getCategory().equals(category));
+                taskListView.refresh();
                 updateStatistics(); // Update statistics
 
             } else {
@@ -228,11 +233,6 @@ public class MainController {
     }
 
     // Priorities
-    @FXML
-    public List<PriorityLevel> getPriorities() {
-        return priorities;
-    }
-
     @FXML
     private void onAddPriority() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/priority_management.fxml"));
@@ -276,8 +276,8 @@ public class MainController {
                 priorityListView.getItems().remove(priority);
                 // Set all tasks with this priority to "Default"
                 tasks.forEach(task -> {
-                    if (task.getPriority().equals(priority.getLevel())) {
-                        task.setPriority("Default");
+                    if (task.getPriority().equals(priority)) {
+                        task.setPriority(priorities.get(0));
                     }
                 });
                 updateStatistics(); // Update statistics
@@ -290,9 +290,87 @@ public class MainController {
     }
 
 
+    // Reminder
+    @FXML
+    private void onAddReminder() {
+        Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
+        if (selectedTask == null) {
+            showAlert("Error", "Please select a task first.");
+            return;
+        }
+
+        if ("Completed".equals(selectedTask.getStatus())) {
+            showAlert("Error", "Cannot add reminders to a completed task.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/reminder_management.fxml"));
+            Parent root = loader.load();
+
+            ReminderController controller = loader.getController();
+            controller.setTask(selectedTask);
+
+            Stage stage = new Stage();
+            stage.setTitle("Add Reminder");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void EditReminder() {
+        Reminder selectedReminder = reminderListView.getSelectionModel().getSelectedItem();
+        if (selectedReminder == null) {
+            showAlert("Error", "Please select a reminder first.");
+            return;
+        }
+
+        Task task = tasks.stream()
+                .filter(t -> t.getId().equals(selectedReminder.getTaskId()))
+                .findFirst()
+                .orElse(null);
+
+        if (task == null) {
+            showAlert("Error", "Task not found for this reminder.");
+            return;
+        }
+
+        if ("Completed".equals(task.getStatus())) {
+            showAlert("Error", "Cannot edit reminders for a completed task.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/reminder_management.fxml"));
+            Parent root = loader.load();
+
+            ReminderController controller = loader.getController();
+            controller.setReminder(selectedReminder);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Reminder");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     //Statistics
-    private void updateStatistics() {
+    public void updateStatistics() {
         int totalTasks = tasks.size();
         int completedTasks = (int) tasks.stream().filter(task -> "Completed".equals(task.getStatus())).count();
         int delayedTasks = (int) tasks.stream().filter(task -> "Delayed".equals(task.getStatus())).count();
@@ -306,4 +384,5 @@ public class MainController {
         delayedTasksLabel.setText("Delayed: " + delayedTasks);
         dueSoonTasksLabel.setText("Due in 7 Days: " + dueSoonTasks);
     }
+
 }

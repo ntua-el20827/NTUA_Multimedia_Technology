@@ -39,5 +39,12 @@
                 <Button onAction="#onAddPriority" text="Add Priority" />
             </VBox>
         </Tab>
+        <!-- Καρτέλα Υπενθυμίσεις -->
+        <Tab closable="false" text="Υπενθυμίσεις">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <ListView fx:id="reminderListView" prefHeight="424.0" prefWidth="810.0" />
+                <Button onAction="#onAddReminder" text="Add Reminder" />
+            </VBox>
+        </Tab>
     </TabPane>
 </VBox>

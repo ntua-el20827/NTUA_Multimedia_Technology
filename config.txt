@@ -7,7 +7,7 @@ Using:
 - IntelIJ Config
 	- Run -> Edit Configurations -> Add VM Option -> Put this:
 	--module-path /path/to/javafx-sdk-17.0.13/lib --add-modules javafx.controls,javafx.fxml
-	(--module-path /home/george/Programs/openjfx-17.0.13_linux-x64_bin-sdk/javafx-sdk-17.0.13/lib --add-modules javafx.controls,javafx.fxml)
+	(--module-path /home/glonex/Programs/openjfx-17.0.13_linux-x64_bin-sdk/javafx-sdk-17.0.13/lib --add-modules javafx.controls,javafx.fxml)
 	
 ================================================================================================================================================
 ================================================================================================================================================
