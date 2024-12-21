@@ -7,19 +7,21 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
 <VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.taskmanager.ui.MainController">
     <!-- Συγκεντρωτικές πληροφορίες -->
     <VBox prefHeight="75.0" prefWidth="747.0" spacing="10" style="-fx-padding: 10;">
-        <Label fx:id="totalTasksLabel" text="Συνολικές Εργασίες: 0" />
-        <Label fx:id="completedTasksLabel" text="Ολοκληρωμένες Εργασίες: 0" />
-        <Label fx:id="delayedTasksLabel" text="Καθυστερημένες Εργασίες: 0" />
-        <Label fx:id="dueSoonTasksLabel" text="Προθεσμία Εντός 7 Ημερών: 0" />
+        <Label fx:id="totalTasksLabel" text="Total Tasks:" />
+        <Label fx:id="completedTasksLabel" text="Completed Tasks:" />
+        <Label fx:id="delayedTasksLabel" text="Delayed Tasks: " />
+        <Label fx:id="dueSoonTasksLabel" text="Due in 7 Days:" />
     </VBox>
 
     <!-- TabPane για τις λειτουργίες -->
     <TabPane>
         <!-- Καρτέλα Tasks -->
-        <Tab closable="false" text="Εργασίες">
+        <Tab closable="false" text="Tasks">
             <VBox prefHeight="502.0" prefWidth="830.0" spacing="10" style="-fx-padding: 10;">
                 <ListView fx:id="taskListView" prefHeight="422.0" prefWidth="810.0" />
                 <Button onAction="#onAddTask" text="Add Task" />
@@ -27,24 +29,38 @@
             </VBox>
         </Tab>
         <!-- Καρτέλα Κατηγορίες -->
-        <Tab closable="false" text="Κατηγορίες">
+        <Tab closable="false" text="Categories">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <ListView fx:id="categoryListView" prefHeight="424.0" prefWidth="810.0" />
                 <Button onAction="#onAddCategory" text="Add Category" />
             </VBox>
         </Tab>
         <!-- Καρτέλα Προτεραιότητες -->
-        <Tab closable="false" text="Προτεραιότητες">
+        <Tab closable="false" text="Priority Levels">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <ListView fx:id="priorityListView" prefHeight="424.0" prefWidth="810.0" />
                 <Button onAction="#onAddPriority" text="Add Priority" />
             </VBox>
         </Tab>
         <!-- Καρτέλα Υπενθυμίσεις -->
-        <Tab closable="false" text="Υπενθυμίσεις">
+        <Tab closable="false" text="Reminders">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <ListView fx:id="reminderListView" prefHeight="424.0" prefWidth="810.0" />
             </VBox>
         </Tab>
+        <!-- Καρτέλα Αναζήτηση -->
+        <Tab closable="false" text="Search">
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <Label text="Search Fields:" />
+                <TextField fx:id="searchTitleField" promptText="Τίτλος Εργασίας" />
+                <ComboBox fx:id="searchCategoryCombo" promptText="Κατηγορία" />
+                <ComboBox fx:id="searchPriorityCombo" promptText="Επίπεδο Προτεραιότητας" />
+                <Button onAction="#onClearSearchFields" text="Καθαρισμός" />
+                <Button onAction="#onSearchTasks" text="Find Task!" />
+                <Label text="Results:" />
+                <ListView fx:id="searchResultsListView" prefHeight="400.0" />
+            </VBox>
+        </Tab>
+
     </TabPane>
 </VBox>

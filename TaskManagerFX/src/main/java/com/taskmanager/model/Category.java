@@ -33,4 +33,7 @@ public class Category {
         return name != null ? name.hashCode() : 0;
     }
 
+    public int compareTo(Category category) {
+        return name.compareTo(category.getName());
+    }
 }

@@ -15,6 +15,15 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
+
+/**
+ * Controller class for the main interface of the Medialab Assistant.
+ * This is the most important class in the application!
+ *
+ * This controller manages tasks, categories, priorities, and reminders.
+ * It handles user interactions with the Main UI page and updates it accordingly.
+ * Provides functionality for adding, editing, searching, and calculating statistics.
+ */
 public class MainController {
     @FXML private ListView<Task> taskListView;
     @FXML private ListView<Category> categoryListView;
@@ -31,8 +40,18 @@ public class MainController {
     @FXML private Label delayedTasksLabel;
     @FXML private Label dueSoonTasksLabel;
 
+    // For Search
+    @FXML private TextField searchTitleField;
+    @FXML private ComboBox<Category> searchCategoryCombo;
+    @FXML private ComboBox<PriorityLevel> searchPriorityCombo;
+    @FXML private ListView<Task> searchResultsListView;
 
-    // Initialize. Load tasks from json files.
+
+
+    /**
+     * Initializes the controller by setting up event handlers and preparing the UI.
+     * Configures double-click actions for editing tasks, categories, priorities, and reminders.
+     */
     @FXML
     public void initialize() {
         // Allow the user to interact with the list views
@@ -78,34 +97,72 @@ public class MainController {
                 }
             }
         });
+
+        // -- Search --
+        searchResultsListView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Task selectedTask = searchResultsListView.getSelectionModel().getSelectedItem();
+                if (selectedTask != null) {
+                    editTask(selectedTask);
+                }
+            }
+        });
+
     }
 
-    // On Initialization from MainApp, configure the tasks, categories, and priorities
+    // Setters for the data. Used by MainApp to pass the data from JSON files to the MainController.
+
+    /**
+     * Sets the list of categories available in the system and updates the UI.
+     * @param categories the list of Category objects to be displayed and used in the system.
+     */
     public void setCategories(List<Category> categories) {
         this.categories = categories;
-        categoryListView.getItems().addAll(categories); // Ενημερώνει το GUI
+        categoryListView.getItems().addAll(categories);
+        searchCategoryCombo.getItems().addAll(categories);
     }
 
+    /**
+     * Sets the list of priority levels available in the system and updates the UI.
+     * @param priorities the list of PriorityLevel objects to be displayed and used in the system.
+     */
     public void setPriorities(List<PriorityLevel> priorities) {
         this.priorities = priorities;
-        priorityListView.getItems().addAll(priorities); // Ενημερώνει το GUI
+        priorityListView.getItems().addAll(priorities);
+        searchPriorityCombo.getItems().addAll(priorities);
     }
 
+    /**
+     * Sets the list of tasks available in the system and updates the UI.
+     *
+     * @param tasks the list of Task objects to be displayed and managed.
+     */
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
-        taskListView.getItems().addAll(tasks); // Ενημερώνει το GUI
+        taskListView.getItems().addAll(tasks);
+        // sort the tasks by category
+        taskListView.getItems().sort((task1, task2) -> task1.getCategory().compareTo(task2.getCategory()));
     }
 
+    /**
+     * Sets the list of reminders available in the system and updates the UI.
+     *
+     * @param reminders the list of Reminder objects to be displayed and managed.
+     */
     public void setReminders(List<Reminder> reminders) {
-        // Εδώ θα πρέπει να συνδέσουμε τις υπενθυμίσεις με τις εργασίες
         this.reminders = reminders;
-        reminderListView.getItems().addAll(reminders); // Ενημερώνει το GUI
+        reminderListView.getItems().addAll(reminders);
     }
 
 
+    // Event Handlers. Adding, Editing, and Deleting tasks, categories, priorities, and reminders.
 
-    // Tasks
+    // NOTE:
+    // These methods don't create new objects but open dialogs for the user to input data.
+    // After the creation or the editing of the object from the corresponding controller
+    // these methods update the data structures shown in the UI
 
+    // -- Tasks --
     @FXML
     private void onAddTask() {
         // New Dialog to create a task
@@ -120,6 +177,7 @@ public class MainController {
             controller.setCategories(categories);
             controller.setPriorities(priorities);
 
+            // Show the dialog and wait until the user closes it
             Stage stage = new Stage();
             stage.setTitle("Add New Task");
             stage.setScene(new Scene(root));
@@ -129,6 +187,8 @@ public class MainController {
             if (newTask != null) {
                 tasks.add(newTask);
                 taskListView.getItems().add(newTask);
+                // sort
+                taskListView.getItems().sort((task1, task2) -> task1.getCategory().compareTo(task2.getCategory()));
                 updateStatistics(); // Update statistics
                 //JSONHandler.saveTasks(tasks); // Save task only at the end of the application!
             }
@@ -171,6 +231,8 @@ public class MainController {
             } else {
                 // Refresh UI for modified task
                 taskListView.refresh();
+                //sort
+                taskListView.getItems().sort((task1, task2) -> task1.getCategory().compareTo(task2.getCategory()));
                 // Manage the reminders
                 // We will use Iterator to remove the completed reminders
                 Iterator<Reminder> iterator = reminders.iterator();
@@ -195,7 +257,7 @@ public class MainController {
         }
     }
 
-    // Categories
+    // -- Categories --
     @FXML
     private void onAddCategory() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/category_management.fxml"));
@@ -252,7 +314,7 @@ public class MainController {
         }
     }
 
-    // Priorities
+    // -- Priorities --
     @FXML
     private void onAddPriority() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/priority_management.fxml"));
@@ -310,7 +372,7 @@ public class MainController {
     }
 
 
-    // Reminder
+    // -- Reminders --
     @FXML
     private void onAddReminder() {
         Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
@@ -388,6 +450,82 @@ public class MainController {
     }
 
 
+    /**
+     * Updates the task statistics displayed in the UI, including total, completed, delayed, and due soon tasks.
+     */
+    public void updateStatistics() {
+        // Υπολογισμός των στατιστικών
+        int totalTasks = tasks.size();
+        int completedTasks = (int) tasks.stream().filter(task -> "Completed".equals(task.getStatus())).count();
+        int delayedTasks = (int) tasks.stream().filter(task -> "Delayed".equals(task.getStatus())).count();
+        int dueSoonTasks = (int) tasks.stream()
+                .filter(task -> task.getDueDate() != null && !task.getDueDate().isBefore(LocalDate.now())
+                        && task.getDueDate().isBefore(LocalDate.now().plusDays(7)))
+                .count();
+        // Ενημέρωση των Labels
+        totalTasksLabel.setText("Total Tasks: " + totalTasks);
+        completedTasksLabel.setText("Completed Tasks: " + completedTasks);
+        delayedTasksLabel.setText("Delayed Tasks: " + delayedTasks);
+        dueSoonTasksLabel.setText("Due in 7 Days: " + dueSoonTasks);
+    }
+
+    // -- Search --
+    @FXML
+    private void onSearchTasks() {
+        // Λήψη τιμών από τα πεδία αναζήτησης
+        String titleQuery = searchTitleField.getText().trim().toLowerCase();
+        Category selectedCategory = searchCategoryCombo.getValue();
+        PriorityLevel selectedPriority = searchPriorityCombo.getValue();
+
+        // Φιλτράρισμα των εργασιών
+        List<Task> filteredTasks = tasks.stream()
+                .filter(task -> (titleQuery.isEmpty() || task.getTitle().toLowerCase().contains(titleQuery)))
+                .filter(task -> (selectedCategory == null || task.getCategory().equals(selectedCategory)))
+                .filter(task -> (selectedPriority == null || task.getPriority().equals(selectedPriority)))
+                .toList();
+
+        // Ενημέρωση της λίστας αποτελεσμάτων
+        searchResultsListView.getItems().setAll(filteredTasks);
+    }
+    @FXML
+    private void onClearSearchFields() {
+        // Καθαρισμός πεδίων
+        searchTitleField.clear();
+        searchCategoryCombo.getSelectionModel().clearSelection();
+        searchPriorityCombo.getSelectionModel().clearSelection();
+        searchResultsListView.getItems().clear(); // Καθαρισμός αποτελεσμάτων
+    }
+
+    /**
+     * Checks for delayed tasks in the system and displays an alert if any are found.
+     * Used by MainApp to check for delayed tasks when the application starts and notifies the user.
+     * @param tasks the list of tasks to check for delays.
+     */
+    public void checkForDelayedTasks(List<Task> tasks) {
+        long delayedTasksCount = tasks.stream()
+                .filter(task -> "Delayed".equals(task.getStatus()))
+                .count();
+
+        if (delayedTasksCount > 0) {
+            showDelayedTasksAlert(delayedTasksCount, tasks);
+        }
+    }
+
+    private void showDelayedTasksAlert(long delayedTasksCount, List<Task> tasks) {
+        String delayedTasksDetails = tasks.stream()
+                .filter(task -> "Delayed".equals(task.getStatus()))
+                .map(task -> task.getTitle() + " (Προθεσμία: " + task.getDueDate() + ")")
+                .reduce("", (acc, taskDetails) -> acc + taskDetails + "\n");
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Ειδοποίηση Εκπρόθεσμων Εργασιών");
+        alert.setHeaderText("Υπάρχουν Εκπρόθεσμες Εργασίες");
+        alert.setContentText("Πλήθος Εκπρόθεσμων Εργασιών: " + delayedTasksCount + "\n\n" + delayedTasksDetails);
+
+        alert.showAndWait();
+    }
+
+    // Help method to show alerts
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -396,21 +534,5 @@ public class MainController {
         alert.showAndWait();
     }
 
-
-    //Statistics
-    public void updateStatistics() {
-        int totalTasks = tasks.size();
-        int completedTasks = (int) tasks.stream().filter(task -> "Completed".equals(task.getStatus())).count();
-        int delayedTasks = (int) tasks.stream().filter(task -> "Delayed".equals(task.getStatus())).count();
-        int dueSoonTasks = (int) tasks.stream()
-                .filter(task -> task.getDueDate() != null && !task.getDueDate().isBefore(LocalDate.now())
-                        && task.getDueDate().isBefore(LocalDate.now().plusDays(7)))
-                .count();
-        // Ενημέρωση Labels
-        totalTasksLabel.setText("Total Tasks: " + totalTasks);
-        completedTasksLabel.setText("Completed: " + completedTasks);
-        delayedTasksLabel.setText("Delayed: " + delayedTasks);
-        dueSoonTasksLabel.setText("Due in 7 Days: " + dueSoonTasks);
-    }
 
 }

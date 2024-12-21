@@ -1,16 +1,22 @@
 package com.taskmanager.ui;
 
-import com.taskmanager.json.JSONHandler;
 import com.taskmanager.model.Category;
 import com.taskmanager.model.PriorityLevel;
+import com.taskmanager.model.StatusType;
 import com.taskmanager.model.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-// TaskController.java
+/**
+ * Controller class for managing tasks in the Task Management Interface.
+ * Provides methods to handle user interactions for creating, editing and deleting tasks.
+ * Also, handles priority levels, categories, and
+ */
 public class TaskController {
     @FXML private TextField titleField;
     @FXML private TextArea descriptionField;
@@ -28,25 +34,29 @@ public class TaskController {
 
     @FXML
     private void initialize() {
-        statusCombo.getItems().addAll("Open", "In Progress", "Postponed", "Completed", "Delayed");
-        // Προσθήκη dummy επιλογών για το παράδειγμα
+        // Add values to the status combo box
+        //statusCombo.getItems().addAll("Open", "In Progress", "Postponed", "Completed", "Delayed");
+
+        // Use StatusType enum values to populate the status combo box
+        for (StatusType status : StatusType.values()) {
+            String displayName = status.name().charAt(0) + status.name().substring(1).toLowerCase().replace("_", " ");
+            statusCombo.getItems().add(displayName);
+        }
+        // Check
+        System.out.println(statusCombo.getItems());
+
+        // Add dummy values to the category and priority combo boxes for testing purposes
         //categoryCombo.getItems().addAll("Work", "Personal", "Hobby");
         //priorityCombo.getItems().addAll("Low", "Medium", "High");
-
-        //
-        /*
-        if (categories != null) {
-            categoryCombo.getItems().setAll(categories.stream().map(Category::getName).toList());
-        }
-        if (priorities != null) {
-            priorityCombo.getItems().setAll(priorities.stream().map(PriorityLevel::getLevel).toList());
-        }
-        */
-
         deleteButton.setVisible(false);
     }
 
-    // Take the task from the MainController and set it to the currentTask to edit it
+     /**
+     * Sets the task to be edited or displayed in the controller.
+     * Populates the fields in the UI with the task's data.
+     *
+     * @param task the Task object to be edited. If null, no task is preloaded.
+     */
     public void setTask(Task task) {
         if (task != null) {
             this.currentTask = task;
@@ -62,6 +72,12 @@ public class TaskController {
 
     }
 
+    /**
+     * Sets the list of categories available for selection in the UI.
+     * Updates the category combo box with the provided categories.
+     *
+     * @param categories a list of Category objects to populate the combo box.
+     */
     public void setCategories(List<Category> categories) {
         this.categories = categories;
         if (categories != null) {
@@ -69,6 +85,13 @@ public class TaskController {
         }
     }
 
+
+    /**
+     * Sets the list of priority levels available for selection in the UI.
+     * Updates the priority combo box with the provided priority levels.
+     *
+     * @param priorities a list of PriorityLevel objects to populate the combo box.
+     */
     public void setPriorities(List<PriorityLevel> priorities) {
         this.priorities = priorities;
         if (priorities != null) {
@@ -77,6 +100,9 @@ public class TaskController {
     }
 
 
+    // Handles "Save" button of the Task Management Interface.
+    // Actually creating a new task (object) or updating an existing one.
+    // Then the MainController will add it to the list shown in the UI.
     @FXML
     private void onSaveTask() {
         if (currentTask == null) { // New Task
@@ -120,6 +146,12 @@ public class TaskController {
         });
     }
 
+    /**
+     * Retrieves the task that has been edited or created in the controller.
+     * If the task was deleted, this method returns null.
+     *
+     * @return the Task object representing the edited or created task, or null if deleted.
+     */
     public Task getTask() {
         return taskDeleted ? null : currentTask;
     }

@@ -8,7 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.taskmanager.ui.TaskController" alignment="CENTER" spacing="10">
-    <Label text="Add New Task"/>
+    <Label text="Task Management"/>
     <TextField fx:id="titleField" promptText="Title"/>
     <TextArea fx:id="descriptionField" promptText="Description"/>
     <ComboBox fx:id="categoryCombo" promptText="Select Category"/>

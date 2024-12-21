@@ -23,39 +23,45 @@ project-root/
 ├── src/
 │   ├── main/
 │   │   ├── java/
-│   │   │   ├── com/
-│   │   │   │   ├── medialab/
-│   │   │   │   │   ├── MainApp.java #Εκκίνηση της Εφαρμογής
-│   │   │   │   │   ├── model/
-│   │   │   │   │   │   ├── Task.java
-│   │   │   │   │   │   ├── Category.java
-│   │   │   │   │   │   ├── PriorityLevel.java
-│   │   │   │   │   │   ├── Reminder.java
-│   │   │   │   │   │   └── TaskManager.java
-│   │   │   │   │   ├── json/
-│   │   │   │   │   │   ├── JSONHandler.java  # Κλάση για ανάγνωση και αποθήκευση JSON
-│   │   │   │   │   └── ui/
-│   │   │   │   │       ├── MainController.java
-│   │   │   │   │       ├── TaskController.java
-│   │   │   │   │       └── CategoryController.java
-│   │   │   │   │
+│   │   │   └── com/
+│   │   │       └── taskmanager/
+│   │   │           ├── json/
+│   │   │           │   ├── JSONHandler.java
+│   │   │           │   └── LocalDateAdapter.java
+│   │   │           ├── model/
+│   │   │           │   ├── Category.java
+│   │   │           │   ├── PriorityLevel.java
+│   │   │           │   ├── Reminder.java
+│   │   │           │   ├── ReminderType.java
+│   │   │           │   ├── StatusType.java
+│   │   │           │   └── Task.java
+│   │   │           ├── ui/
+│   │   │           │   ├── CategoryController.java
+│   │   │           │   ├── MainController.java
+│   │   │           │   ├── PriorityController.java
+│   │   │           │   ├── ReminderController.java
+│   │   │           │   └── TaskController.java
+│   │	│   	    └─ MainApp.java
+│   │   │   
 │   │   ├── resources/
 │   │   │   ├── medialab/
-│   │   │   │   ├── tasks.json
 │   │   │   │   ├── categories.json
 │   │   │   │   ├── priorities.json
-│   │   │   │   └── reminders.json
+│   │   │   │   ├── reminders.json
+│   │   │   │   └── tasks.json
 │   │   │   └── views/
-│   │   │       ├── main.fxml         # Κεντρικό GUI
-│   │   │       ├── task_management.fxml
-│   │   │       └── category_management.fxml
-│   └── test/
-│       ├── com/
-│       │   ├── medialab/
-│       │   │   └── ...               # Test κλάσεων
+│   │   │       ├── category_management.fxml
+│   │   │       ├── main.fxml
+│   │   │       ├── priority_management.fxml
+│   │   │       ├── reminder_management.fxml
+│   │   │       └── task_management.fxml
+│   │
+│   └── module-info.java
 │
+├── gradle/
 ├── build.gradle
-└── README.md
+├── .gitignore
+
 
 
 Πες μου αν εχεις καταλάβει την εργασία μου, για να προσχωρήσω στην πρώτη ερώτηση

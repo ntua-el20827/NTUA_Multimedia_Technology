@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.taskmanager.ui.CategoryController" alignment="CENTER" spacing="10">
-    <Label text="Manage Categories" />
+<VBox alignment="CENTER" prefHeight="191.0" prefWidth="549.0" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.taskmanager.ui.CategoryController">
+    <Label prefHeight="30.0" prefWidth="174.0" text="Categories Management" />
     <TextField fx:id="categoryNameField" promptText="Category Name" />
-    <Button text="Save" onAction="#onSaveCategory" />
-    <Button text="Delete" fx:id="deleteButton" onAction="#onDeleteCategory" visible="false" />
+    <Button onAction="#onSaveCategory" text="Save" />
+    <Button fx:id="deleteButton" onAction="#onDeleteCategory" text="Delete" visible="false" />
 </VBox>

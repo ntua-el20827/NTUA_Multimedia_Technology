@@ -16,22 +16,31 @@ import java.util.List;
 
 import com.taskmanager.ui.MainController;
 
+/**
+ * Main application class for the Task Management System.
+ * Loads data, initializes the user interface, and manages application lifecycle.
+ */
 public class MainApp extends Application {
+    /**
+     * Starts the JavaFX application by loading data, setting up the primary stage, and initializing the UI.
+     * This method is called by the JavaFX runtime when the application is launched.
+     * @param primaryStage the primary stage for this application.
+     * @throws Exception if there is an error during application startup.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            // Χρηση του JSONHandler για την φόρτωση των δεδομένων από τα JSON αρχεία!
+            // Data is loaded from JSON files using the JSONHandler class (check com.taskmanager.json.JSONHandler)
 
-            // Φόρτωση των Categories και Priorities πρώτα
+            // Load Categories and Priorities first
             List<Category> categories = JSONHandler.loadCategories();
             List<PriorityLevel> priorities = JSONHandler.loadPriorities();
 
-            // Φόρτωση των Tasks με σύνδεση στις κατηγορίες και προτεραιότητες
+            // Load Tasks and connect them with Categories and Priorities
             List<Task> tasks = JSONHandler.loadTasks(categories, priorities);
 
-            // Φορτωση των υπενθυμίσεων
+            // Load Reminders and connect them with Tasks
             List<Reminder> reminders = JSONHandler.loadReminders();
-            // Σύνδεση των Reminders με τα Tasks
             for (Reminder reminder : reminders) {
                 Task task = tasks.stream()
                         .filter(t -> t.getId().equals(reminder.getTaskId()))
@@ -43,17 +52,16 @@ public class MainApp extends Application {
                 }
             }
 
-            // Check Objects
+            // Check the objects that have been created
             categories.forEach(category -> System.out.println(category));
             priorities.forEach(priority -> System.out.println(priority));
             tasks.forEach(task -> System.out.println(task));
 
-
-            // Φόρτωση του FXML αρχείου και δημιουργία του Scene για το primaryStage της εφαρμογής
+            // Load the main FXML layout
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
             Parent root = loader.load();
 
-            // Προσθήκη των δεδομένων στον MainController
+            // Get the Main Controller of the App and pass the data to it.
             MainController controller = loader.getController();
             controller.setCategories(categories);
             controller.setPriorities(priorities);
@@ -61,13 +69,13 @@ public class MainApp extends Application {
             controller.setReminders(reminders);
             controller.updateStatistics();
 
-            // Δημιουργία του Scene και εμφάνιση του primaryStage
-            Scene scene = new Scene(root, 800, 700);
 
+            // Create the main scene and set it on the primary stage
+            Scene scene = new Scene(root, 800, 700);
             primaryStage.setTitle("Media Lab Assistant");
             primaryStage.setScene(scene);
 
-            // Προσθήκη Listener για την αποθήκευση των δεδομένων σε JSON όταν κλείνει η εφαρμογή
+            // A handler for the close event of the primary stage. When the user exits the application the data is saved to JSON files.
             primaryStage.setOnCloseRequest(event -> {
                 JSONHandler.saveTasks(tasks);
                 JSONHandler.saveCategories(categories);
@@ -77,8 +85,12 @@ public class MainApp extends Application {
             });
 
             primaryStage.show();
+
+            // Check for delayed tasks
+            controller.checkForDelayedTasks(tasks);
+            // Here is the right place for this check as I want the application to be opened first!
         } catch (IOException e) {
-            System.out.println("Don't Know WTF!");
+            System.out.println("Something went wrong! (again...)");
             e.printStackTrace();
         }
     }
