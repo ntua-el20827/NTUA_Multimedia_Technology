@@ -64,7 +64,8 @@ public class ReminderController {
         }
 
         if (currentReminder == null) { // New Reminder
-            currentReminder = new Reminder(task.getId(), type, reminderDate);
+            currentReminder = new Reminder(task.getId(),type, reminderDate);
+            currentReminder.setTaskTitle(task.getTitle());
             task.addReminder(currentReminder);
         } else { // Update Reminder
             currentReminder.setType(type);
@@ -110,5 +111,9 @@ public class ReminderController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public Reminder getReminder() {
+        return currentReminder;
     }
 }

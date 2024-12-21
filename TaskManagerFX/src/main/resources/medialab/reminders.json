@@ -1,1 +1,12 @@
-[{"taskId":"1","type":"ONE_DAY_BEFORE","reminderDate":"2024-12-29"},{"taskId":"2","type":"CUSTOM_DATE","reminderDate":"2024-12-20"}]
+[
+  {
+    "taskId": "1",
+    "type": "ONE_DAY_BEFORE",
+    "reminderDate": "2024-12-29"
+  },
+  {
+    "taskId": "2",
+    "type": "CUSTOM_DATE",
+    "reminderDate": "2024-12-20"
+  }
+]

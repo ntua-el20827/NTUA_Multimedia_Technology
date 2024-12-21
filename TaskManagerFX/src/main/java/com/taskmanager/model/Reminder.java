@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Reminder {
     private String taskId;
+    private String taskTitle;
     private ReminderType type;
     private LocalDate reminderDate;
 
@@ -16,17 +17,18 @@ public class Reminder {
     public String getTaskId() {return taskId;}
     public void setTaskId(String taskId) {this.taskId = taskId;}
 
-    public ReminderType getType() {return type;}
+    public String getTaskTitle() {return taskTitle;}
+    public void setTaskTitle(String taskTitle) {this.taskTitle = taskTitle;}
 
+    public ReminderType getType() {return type;}
     public void setType(ReminderType type) {this.type = type;}
 
     public LocalDate getReminderDate() {return reminderDate;}
-
     public void setReminderDate(LocalDate reminderDate) {this.reminderDate = reminderDate;}
 
     @Override
     public String toString() {
-        return "Reminder{taskId=" + taskId + ", type=" + type + ", date=" + reminderDate + "}";
+        return "Reminder for " + taskTitle + " (type=" + type + ", date=" + reminderDate + ")";
     }
 
 

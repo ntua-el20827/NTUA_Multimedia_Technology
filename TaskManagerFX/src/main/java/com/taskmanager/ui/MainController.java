@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainController {
@@ -164,9 +165,28 @@ public class MainController {
                 // Task was deleted
                 tasks.remove(task);
                 taskListView.getItems().remove(task);
+                // Remove all reminders for this task
+                reminders.removeIf(reminder -> reminder.getTaskId().equals(task.getId()));
+                reminderListView.getItems().removeIf(reminder -> reminder.getTaskId().equals(task.getId()));
             } else {
                 // Refresh UI for modified task
                 taskListView.refresh();
+                // Manage the reminders
+                // We will use Iterator to remove the completed reminders
+                Iterator<Reminder> iterator = reminders.iterator();
+                while (iterator.hasNext()) {
+                    Reminder reminder = iterator.next();
+                    if (reminder.getTaskId().equals(updatedTask.getId())) {
+                        if ("Completed".equals(updatedTask.getStatus())) {
+                            iterator.remove();
+                            reminderListView.getItems().remove(reminder);
+                            System.out.println("Reminder removed for completed task");
+                        } else {
+                            reminder.setTaskTitle(updatedTask.getTitle());
+                        }
+                    }
+                }
+                reminderListView.refresh();
             }
             updateStatistics(); // Update statistics
             //JSONHandler.saveTasks(tasks); // Save updated task list to JSON
@@ -315,6 +335,14 @@ public class MainController {
             stage.setTitle("Add Reminder");
             stage.setScene(new Scene(root));
             stage.showAndWait();
+
+            Reminder newReminder = controller.getReminder();
+            if (newReminder != null) {
+                reminders.add(newReminder);
+                reminderListView.getItems().add(newReminder);
+                //JSONHandler.saveReminders(reminders);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

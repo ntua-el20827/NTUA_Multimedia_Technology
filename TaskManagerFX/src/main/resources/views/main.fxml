@@ -23,6 +23,7 @@
             <VBox prefHeight="502.0" prefWidth="830.0" spacing="10" style="-fx-padding: 10;">
                 <ListView fx:id="taskListView" prefHeight="422.0" prefWidth="810.0" />
                 <Button onAction="#onAddTask" text="Add Task" />
+                <Button onAction="#onAddReminder" text="Add Reminder for Selected Task" />
             </VBox>
         </Tab>
         <!-- Καρτέλα Κατηγορίες -->
@@ -43,7 +44,6 @@
         <Tab closable="false" text="Υπενθυμίσεις">
             <VBox spacing="10" style="-fx-padding: 10;">
                 <ListView fx:id="reminderListView" prefHeight="424.0" prefWidth="810.0" />
-                <Button onAction="#onAddReminder" text="Add Reminder" />
             </VBox>
         </Tab>
     </TabPane>
