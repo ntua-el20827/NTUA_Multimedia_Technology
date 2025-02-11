@@ -8,6 +8,6 @@
 <VBox alignment="CENTER" prefHeight="205.0" prefWidth="570.0" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.taskmanager.ui.PriorityController">
     <Label text="Priority Level Management" />
     <TextField fx:id="priorityLevelField" promptText="Category Name" />
-    <Button onAction="#onSavePriority" text="Save" />
+    <Button fx:id="saveButton" onAction="#onSavePriority" text="Save"/>
     <Button fx:id="deleteButton" onAction="#onDeletePriority" text="Delete" visible="false" />
 </VBox>

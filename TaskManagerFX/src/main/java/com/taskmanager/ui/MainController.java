@@ -308,6 +308,7 @@ public class MainController {
 
             } else {
                 categoryListView.refresh();
+                taskListView.refresh(); // Tasks with this category need to be updated
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -353,6 +354,7 @@ public class MainController {
 
             PriorityLevel updatedPriority = controller.getPriority();
 
+            // If the priority is deleted, remove it from the list and update the tasks
             if (updatedPriority == null) {
                 priorities.remove(priority);
                 priorityListView.getItems().remove(priority);
@@ -365,6 +367,7 @@ public class MainController {
                 updateStatistics(); // Update statistics
             } else {
                 priorityListView.refresh();
+                taskListView.refresh(); // Tasks with this priority need to be updated
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -423,6 +426,9 @@ public class MainController {
                 .findFirst()
                 .orElse(null);
 
+        // print the task
+        System.out.println(task);
+
         if (task == null) {
             showAlert("Error", "Task not found for this reminder.");
             return;
@@ -439,11 +445,24 @@ public class MainController {
 
             ReminderController controller = loader.getController();
             controller.setReminder(selectedReminder);
+            controller.setTask(task);
 
             Stage stage = new Stage();
             stage.setTitle("Edit Reminder");
             stage.setScene(new Scene(root));
             stage.showAndWait();
+
+            // Get the updated reminder (null if deleted)
+            Reminder updatedReminder = controller.getReminder();
+            // print
+            System.out.println(updatedReminder);
+            if (updatedReminder == null) {
+                reminders.remove(selectedReminder);
+                reminderListView.getItems().remove(selectedReminder);
+            } else {
+                reminderListView.refresh();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

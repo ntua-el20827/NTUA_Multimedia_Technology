@@ -9,10 +9,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import com.taskmanager.ui.MainController;
 
@@ -77,11 +80,23 @@ public class MainApp extends Application {
 
             // A handler for the close event of the primary stage. When the user exits the application the data is saved to JSON files.
             primaryStage.setOnCloseRequest(event -> {
-                JSONHandler.saveTasks(tasks);
-                JSONHandler.saveCategories(categories);
-                JSONHandler.savePriorities(priorities);
-                JSONHandler.saveReminders(reminders);
-                System.out.println("All saved to JSON");
+                event.consume(); // Prevent default close action
+
+                // Show confirmation alert
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Exit Confirmation");
+                alert.setHeaderText("Are you sure you want to exit?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // Save data before exiting
+                    JSONHandler.saveTasks(tasks);
+                    JSONHandler.saveCategories(categories);
+                    JSONHandler.savePriorities(priorities);
+                    JSONHandler.saveReminders(reminders);
+                    System.out.println("All saved to JSON");
+                    primaryStage.close(); // Now close the application
+                }
             });
 
             primaryStage.show();

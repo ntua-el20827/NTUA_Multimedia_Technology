@@ -145,7 +145,7 @@ public class Task {
      */
     @Override
     public String toString() {
-        return title + " ( Category = " + category + " / Status = " + status + " / Priority = " + priority + " / Due Date = " + dueDate + " )";
+        return "(Category = " + category + ") - " + title + " - ( Status = " + status + " / Priority = " + priority + " / Due Date = " + dueDate + " )";
         //return title;
     }
 

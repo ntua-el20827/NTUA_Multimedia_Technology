@@ -79,6 +79,10 @@ public class ReminderController {
     private void onDeleteReminder() {
         if (currentReminder != null) {
             task.removeReminder(currentReminder);
+            // Delete reminder // Main Controller will remove it from the list after it catches the null value
+            currentReminder = null;
+            // Print message
+            System.out.println("Reminder deleted.");
             closeWindow();
         }
     }

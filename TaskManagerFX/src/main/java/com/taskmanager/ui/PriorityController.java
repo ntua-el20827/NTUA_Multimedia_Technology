@@ -8,6 +8,7 @@ import com.taskmanager.model.PriorityLevel;
 import javafx.stage.Stage;
 
 public class PriorityController {
+    @FXML private Button saveButton;
     @FXML private TextField priorityLevelField;
     @FXML private Button deleteButton;
 
@@ -26,6 +27,10 @@ public class PriorityController {
             priorityLevelField.setText(priority.getLevel());
             // Delete button not shown if priorty is "Default"
             deleteButton.setVisible(!priority.getLevel().equals("Default"));
+            // Make default not clickable
+            priorityLevelField.setDisable(priority.getLevel().equals("Default"));
+            // Delete save button if priority is "Default"
+            saveButton.setDisable(priority.getLevel().equals("Default"));
         }
     }
 

@@ -6,6 +6,5 @@ public enum StatusType {
     POSTPONED,
     COMPLETED,
     DELAYED
-
 }
 

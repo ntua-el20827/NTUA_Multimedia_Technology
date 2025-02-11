@@ -106,6 +106,27 @@ public class TaskController {
     @FXML
     private void onSaveTask() {
         if (currentTask == null) { // New Task
+            if (titleField.getText().isEmpty()) {
+                showAlert("Validation Error", "Task title cannot be empty.");
+                return;
+            }
+            if (dueDatePicker.getValue() == null) {
+                showAlert("Validation Error", "Due date cannot be empty.");
+                return;
+            }
+            if (categoryCombo.getValue() == null) {
+                showAlert("Validation Error", "Category cannot be empty.");
+                return;
+            }
+            if (priorityCombo.getValue() == null) {
+                // priority = default
+                priorityCombo.setValue(new PriorityLevel("Default"));
+                //PriorityLevel priorityLevel_dummy = new PriorityLevel("Default");
+            }
+            if (statusCombo.getValue() == null) {
+                // status = open
+                statusCombo.setValue("Open");
+            }
             currentTask = new Task(
                     titleField.getText(),
                     descriptionField.getText(),
@@ -128,6 +149,15 @@ public class TaskController {
 
         // Close the window
         closeWindow();
+    }
+
+    // Help method to show alerts
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML
