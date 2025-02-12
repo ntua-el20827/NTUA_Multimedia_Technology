@@ -1,10 +1,10 @@
 # NTUA_Multimedia_Technology
 NTUA ECE MT 2024
 
-### About TaskManager
+## About TaskManager
 This project is a Task Management System designed to introduce students to Java programming and its real-world applications. It focuses on object-oriented design, data persistence using JSON, and GUI development with JavaFX. The system allows users to manage tasks, categories, priorities, and reminders while ensuring data is stored and retrieved efficiently. Through this project, students gain hands-on experience in building structured, interactive, and persistent Java applications
 
-### Screenshots
+## Screenshots
 ![image](https://github.com/user-attachments/assets/4232135f-59bd-458c-99a3-aa5eb430ee6d)
 ![image](https://github.com/user-attachments/assets/9aec682c-b1fc-4700-897f-5b9a34ff32c0)
 ![image](https://github.com/user-attachments/assets/8ffa3c8e-ed9c-40fc-9730-48e9b9f2e4d9)
@@ -16,7 +16,7 @@ This project is a Task Management System designed to introduce students to Java 
 3. Gradle Latest or Wrapper Provided (Required for building the project)
 4. Gson 2.10.1  (JSON parsing library for data serialization and deserialization)
 
-### Set up and RUN
+## Set up and RUN
 1. Clone the Repository
 2. Navigate to prject directory and run these commands:
 ```shell
@@ -25,7 +25,7 @@ This project is a Task Management System designed to introduce students to Java 
 ``` shell
 /gradlew run --args="--module-path </path/to/javafx/lib> --add-modules javafx.controls,javafx.fxml"
 ```
-### Project Overview
+## Project Overview
 This project is built using Gradle and follows the structure below:
 ![image](https://github.com/user-attachments/assets/310d6fcb-39ca-481c-b679-5341901ed826)
 
