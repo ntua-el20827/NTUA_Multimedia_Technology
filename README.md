@@ -33,3 +33,5 @@ This project is built using Gradle and follows the structure below:
 - Data Persistence: Uses JSONHandler to read/write JSON files, ensuring data is saved across sessions.
 - GUI (JavaFX): The UI is implemented with JavaFX FXML, and Scene Builder is used for design.
 - Controllers: MainController connects UI elements to backend logic, while subcontrollers manage individual components.
+
+(More information about each controller and their use can be found at "Design_and_Implementation.pdf")
