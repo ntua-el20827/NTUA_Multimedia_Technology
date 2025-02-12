@@ -27,7 +27,7 @@ This project is a Task Management System designed to introduce students to Java 
 ```
 ### Project Overview
 This project is built using Gradle and follows the structure below:
-![image](https://github.com/user-attachments/assets/c36c8402-6ae9-482f-925f-82bfab4d8fe5)
+![image](https://github.com/user-attachments/assets/310d6fcb-39ca-481c-b679-5341901ed826)
 
 - Object-Oriented Design: Implements core classes (Task, Category, PriorityLevel, Reminder) with has-a relationships.
 - Data Persistence: Uses JSONHandler to read/write JSON files, ensuring data is saved across sessions.
