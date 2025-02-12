@@ -1,12 +1,1 @@
-[
-  {
-    "taskId": "6",
-    "type": "ONE_WEEK_BEFORE",
-    "reminderDate": "2025-02-13"
-  },
-  {
-    "taskId": "7",
-    "type": "ONE_DAY_BEFORE",
-    "reminderDate": "2025-02-17"
-  }
-]
+[{"taskId":"6","taskTitle":"Book doctor’s appointment","type":"ONE_WEEK_BEFORE","reminderDate":"2025-02-13"},{"taskId":"7","taskTitle":"Prepare presentation slides","type":"ONE_DAY_BEFORE","reminderDate":"2025-02-17"}]

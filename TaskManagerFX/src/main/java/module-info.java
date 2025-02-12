@@ -12,6 +12,6 @@ module com.taskmanager {
     // Exports
     exports com.taskmanager;
     exports com.taskmanager.model;
-    //exports com.taskmanager.json;
+    exports com.taskmanager.json;
     exports com.taskmanager.ui;  // Αν η GUI σου βρίσκεται εδώ
 }

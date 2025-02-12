@@ -26,8 +26,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-  mainModule = 'com.taskmanager.ui'
-  mainClass = 'com.taskmanager.ui.MainApp'
+  mainModule = 'com.taskmanager'
+  mainClass = 'com.taskmanager.MainApp'
 }
 
 javafx {
@@ -38,7 +38,7 @@ javafx {
 dependencies {
   implementation('org.controlsfx:controlsfx:11.1.2')
   // Για τα json
-  implementation 'com.google.code.gson:gson:2.10'
+  implementation 'com.google.code.gson:gson:2.10.1'
   //implementation 'com.googlecode.json-simple:json-simple:1.1.1'
   implementation 'org.openjfx:javafx-controls:20'
   implementation 'org.openjfx:javafx-fxml:20'
