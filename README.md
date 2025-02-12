@@ -10,7 +10,7 @@ This project is a Task Management System designed to introduce students to Java 
 ![image](https://github.com/user-attachments/assets/8ffa3c8e-ed9c-40fc-9730-48e9b9f2e4d9)
 ![image](https://github.com/user-attachments/assets/61432b10-086a-4bac-ae34-77f1bf39238e)
 
-### Dependencies
+## Dependencies
 1. Java openjdk 17.0.14
 2. JavaFX 17.0.6
 3. Gradle Latest or Wrapper Provided (Required for building the project)
